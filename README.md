@@ -1,6 +1,6 @@
 # Things JSON Coder
 
-This repo contains a Swift file that allows the creation of the JSON required to be passed to the `json` command of Things’ URL scheme.
+This repo contains a Swift file that allows the creation of the JSON required to be passed to the `json` command of [Things’ URL scheme](https://culturedcode.com/things/support/articles/2803573/).
 
 ## Installation
 
