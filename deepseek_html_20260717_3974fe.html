@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Add to Things</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1c1c1e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #8e8e93;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1c1c1e;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 15px;
+            border: 1.5px solid #e5e5ea;
+            border-radius: 10px;
+            background: #fafafc;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+            background: white;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .inline-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .inline-group .form-group {
+            flex: 1;
+        }
+
+        .quick-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .quick-btn {
+            padding: 4px 12px;
+            font-size: 12px;
+            border: 1px solid #e5e5ea;
+            border-radius: 6px;
+            background: #fafafc;
+            color: #1c1c1e;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .quick-btn:hover {
+            background: #e5e5ea;
+            border-color: #c7c7cc;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            background: #007aff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 6px;
+        }
+
+        .submit-btn:hover {
+            background: #0066d9;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .status {
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status.success {
+            display: flex;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .status.error {
+            display: flex;
+            background: #fbe9e7;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .status-icon {
+            font-size: 18px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e5ea;
+            font-size: 12px;
+            color: #8e8e93;
+            text-align: center;
+        }
+
+        .keyboard-hint {
+            display: inline-block;
+            background: #f0f0f2;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #3a3a3c;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+            }
+
+            .inline-group {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <span>⚡</span> Quick Add
+        </h1>
+        <p class="subtitle">Add tasks to Things 3 from your browser</p>
+
+        <form id="taskForm">
+            <div class="form-group">
+                <label for="taskTitle">Task Title <span style="color: #ff3b30;">*</span></label>
+                <input type="text" id="taskTitle" placeholder="What do you need to do?" required autofocus />
+                <div class="quick-buttons">
+                    <button type="button" class="quick-btn" data-text="Review weekly report">📋 Review weekly report</button>
+                    <button type="button" class="quick-btn" data-text="Follow up with team">👥 Follow up with team</button>
+                    <button type="button" class="quick-btn" data-text="Prepare presentation">📊 Prepare presentation</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="taskNotes">Notes <span style="color: #8e8e93; font-weight: 400;">(optional)</span></label>
+                <textarea id="taskNotes" placeholder="Add context, links, or details…"></textarea>
+            </div>
+
+            <div class="inline-group">
+                <div class="form-group">
+                    <label for="taskWhen">When</label>
+                    <select id="taskWhen">
+                        <option value="">📥 Inbox</option>
+                        <option value="today">☀️ Today</option>
+                        <option value="tomorrow">🌅 Tomorrow</option>
+                        <option value="evening">🌙 Evening</option>
+                        <option value="anytime">🕐 Anytime</option>
+                        <option value="someday">💭 Someday</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskTags">Tags</label>
+                    <input type="text" id="taskTags" placeholder="Work, Errand, etc." />
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">➕ Add to Things</button>
+        </form>
+
+        <div id="status" class="status"></div>
+
+        <div class="footer">
+            <span class="keyboard-hint">⌘ Enter</span> to submit &nbsp;·&nbsp; Opens in Things app
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- DOM Elements -----
+            const form = document.getElementById('taskForm');
+            const titleInput = document.getElementById('taskTitle');
+            const notesInput = document.getElementById('taskNotes');
+            const whenSelect = document.getElementById('taskWhen');
+            const tagsInput = document.getElementById('taskTags');
+            const statusDiv = document.getElementById('status');
+
+            // ----- Quick Buttons -----
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    titleInput.value = this.dataset.text;
+                    titleInput.focus();
+                    // Move cursor to end of text
+                    titleInput.setSelectionRange(titleInput.value.length, titleInput.value.length);
+                });
+            });
+
+            // ----- Keyboard Shortcut: Cmd/Ctrl + Enter -----
+            form.addEventListener('keydown', function(e) {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    form.dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // ----- Form Submission -----
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validate
+                const title = titleInput.value.trim();
+                if (!title) {
+                    showStatus('error', '⚠️', 'Please enter a task title.');
+                    titleInput.focus();
+                    return;
+                }
+
+                // Build the Things URL
+                const encodedTitle = encodeURIComponent(title);
+                const encodedNotes = encodeURIComponent(notesInput.value.trim());
+                const when = whenSelect.value;
+                const tags = tagsInput.value.trim();
+
+                let thingsUrl = `things:///add?title=${encodedTitle}`;
+
+                if (encodedNotes) thingsUrl += `&notes=${encodedNotes}`;
+                if (when) thingsUrl += `&when=${when}`;
+                if (tags) thingsUrl += `&tags=${encodeURIComponent(tags)}`;
+
+                // Show success message
+                showStatus('success', '✅', `Added: "${title}"`);
+
+                // Open Things (this will switch focus to the app)
+                window.location.href = thingsUrl;
+
+                // Reset form after a moment (but keep title for reference)
+                setTimeout(() => {
+                    notesInput.value = '';
+                    whenSelect.value = '';
+                    tagsInput.value = '';
+                    // Keep title so user can see what was added, but select it for quick re-type
+                    titleInput.select();
+                }, 300);
+
+                // Hide status after 5 seconds
+                setTimeout(() => {
+                    statusDiv.className = 'status';
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            });
+
+            // ----- Helper: Show Status -----
+            function showStatus(type, icon, message) {
+                statusDiv.className = `status ${type}`;
+                statusDiv.style.display = 'flex';
+                statusDiv.innerHTML = `<span class="status-icon">${icon}</span> ${message}`;
+            }
+
+            // ----- Auto-focus on load -----
+            titleInput.focus();
+
+        })();
+    </script>
+</body>
+</html>
